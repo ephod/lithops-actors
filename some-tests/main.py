@@ -1,7 +1,8 @@
 # import multiprocessing as mp
-import lithops.multiprocessing as mp
 from queue import Empty
 from threading import Thread
+
+import lithops.multiprocessing as mp
 
 
 class Counter(object):
@@ -52,6 +53,7 @@ class Director(object):
                     self.actors[dest].put(msg)
                 except Empty:
                     pass
+
         self.running = True
         t = Thread(target=p)
         t.start()

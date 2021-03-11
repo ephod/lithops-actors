@@ -41,7 +41,7 @@ def actor_process(actor_type, weak_ref,
     global actor_directory
     actor_directory = directory
 
-    event.set()     # tell father i'm ready
+    event.set()  # tell father i'm ready
     while True:
         action = queue.get()
         # print(action)

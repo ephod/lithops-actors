@@ -3,9 +3,11 @@ import logging
 import uuid
 
 import actors
-from actors.util.inspect import (extract_signature, is_class_method,
-                                 is_function_or_method,
-                                 is_static_method)
+from actors.util.inspect import (
+    extract_signature,
+    is_class_method,
+    is_function_or_method,
+    is_static_method)
 
 logger = logging.getLogger(__name__)
 

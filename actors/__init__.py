@@ -13,6 +13,7 @@ def make_decorator(class_id=None):
 
         raise TypeError("The @actors.remote decorator must be applied to "
                         "a class.")
+
     return class_decorator
 
 

@@ -40,7 +40,7 @@ def main():
     # counter_actor.pls_stop()
     count = counter_actor.get_counter.future.remote()  # Returns do not work yet
 
-    print(f"Count: {count}")    # This will be count.get(), since it's a future
+    print(f"Count: {count}")  # This will be count.get(), since it's a future
 
     counter_actor.set_self.remote(counter_actor)
     counter_actor.check_proxy.remote()

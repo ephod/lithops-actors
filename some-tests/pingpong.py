@@ -1,8 +1,9 @@
-import lithops.multiprocessing as mp
 # import multiprocessing as mp
-import time
 from queue import Empty
+import time
 from threading import Thread
+
+import lithops.multiprocessing as mp
 
 
 class Pinger(object):

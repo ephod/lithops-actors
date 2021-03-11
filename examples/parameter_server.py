@@ -1,12 +1,12 @@
 import os
+
+import actors
+from filelock import FileLock
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import datasets, transforms
-from filelock import FileLock
-import numpy as np
-
-import actors
 
 
 # TODO: This needs futures and sending them as args
@@ -113,7 +113,7 @@ class DataWorker(object):
         self.model = ConvNet()
         self.data_iterator = iter(get_data_loader()[0])
 
-    def compute_gradients(self, weights):   # weights is a future
+    def compute_gradients(self, weights):  # weights is a future
         self.model.set_weights(weights)
         try:
             data, target = next(self.data_iterator)
