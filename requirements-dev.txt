@@ -1,0 +1,6 @@
+-r requirements.txt
+
+# Code coverage measurement for Python
+# License: Apache Software License (Apache 2.0)
+# Upstream url: https://github.com/nedbat/coveragepy
+coverage>=5.5,<6.0
