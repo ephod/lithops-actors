@@ -1,10 +1,12 @@
-# import multiprocessing as mp
-import lithops.multiprocessing as mp
+from typing import Optional
+
+import actors.director
+import actors.actor
 
 actor_directory = {}
 
 
-def send_stop(actor_key):
+def send_stop(actor_key) -> None:
     if actor_directory:
         # we are on a subprocess, we have the directory
         actor_directory[actor_key].put('pls stop')
@@ -14,7 +16,7 @@ def send_stop(actor_key):
         global_director.msg2(actor_key, 'pls stop')
 
 
-def send_action(action):
+def send_action(action: 'actors.actor.Action') -> None:
     if actor_directory:
         # we are on a subprocess, we have the director queue
         actor_directory[action.actor_key].put(action)
@@ -27,9 +29,14 @@ def send_action(action):
     return None
 
 
-def actor_process(actor_type, weak_ref,
-                  queue, directory, event,
-                  args, kwargs):
+def actor_process(
+    actor_type,
+    weak_ref,
+    queue,
+    directory,
+    event,
+    args,
+    kwargs) -> None:
     # Create an instance without __init__ called.
     actor_class = actor_type
     actor_instance = actor_class.__new__(actor_class)
@@ -51,68 +58,20 @@ def actor_process(actor_type, weak_ref,
         action.call(actor_instance)
 
 
-class Director(object):
-
-    def __init__(self):
-        # self.actors = {}
-        # self.queue = mp.Queue()
-        self.manager = mp.Manager()
-        self.actors = self.manager.dict()
-
-    def new_actor(self, actor_type, weak_ref, args, kwargs):
-        actor_queue = mp.Queue()
-        self.actors[weak_ref._thtr_actor_key] = actor_queue
-        event = self.manager.Event()
-        actor_ps = mp.Process(target=actor_process,
-                              args=(actor_type, weak_ref,
-                                    actor_queue, self.actors, event,
-                                    args, kwargs))
-        actor_ps.start()
-        # we need to wait for the child to be working,
-        # otherwise, the queue loses events
-        event.wait()
-        return actor_ps
-
-    def run(self):
-        # def p():
-        #     while self.running:
-        #         try:
-        #             m = self.queue.get(timeout=1)
-        #             dest = m[0]
-        #             msg = m[1]
-        #             self.actors[dest].put(msg)
-        #         except Empty:
-        #             pass
-        #
-        self.running = True
-        # self.t = Thread(target=p)
-        # self.t.start()
-
-    def stop(self):
-        # stop all actors
-        for actor in self.actors.keys():
-            self.msg2(actor, 'pls stop')
-        self.running = False
-        # self.t.join()
-
-    def msg2(self, actor_key, msg):
-        self.actors[actor_key].put(msg)
+global_director: Optional['actors.director.Director'] = None
 
 
-global_director = None
-
-
-def start():
+def start() -> None:
     global global_director
     if global_director is not None:
         print("Already started")
         return
     print("Starting Lithops Actors")
-    global_director = Director()
+    global_director = actors.director.Director()
     global_director.run()
 
 
-def shutdown():
+def shutdown() -> None:
     global global_director
     if global_director is None:
         print("Not started, can't shutdown")
@@ -122,7 +81,7 @@ def shutdown():
     print("Shut down")
 
 
-def new_actor(meta, weak_ref, args, kwargs):
+def new_actor(meta, weak_ref, args, kwargs) -> None:
     global global_director
     if global_director is None:
         raise Exception("Not started, can't create actor")
