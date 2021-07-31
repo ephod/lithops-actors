@@ -1,10 +1,11 @@
 import os
+
+from filelock import FileLock
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import datasets, transforms
-from filelock import FileLock
-import numpy as np
 
 import actors
 

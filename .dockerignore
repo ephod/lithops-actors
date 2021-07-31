@@ -153,11 +153,3 @@ Thumbs.db #thumbnail cache on Windows
 .vscode/
 
 .lithops_config*
-
-docker/alertmanager/*
-!docker/alertmanager/.gitkeep
-docker/grafana/*
-!docker/grafana/.gitkeep
-docker/prometheus/*
-!docker/prometheus/.gitkeep
-!docker/prometheus/prometheus.yml

@@ -1,12 +1,13 @@
 import os
 
-import actors
 from filelock import FileLock
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import datasets, transforms
+
+import actors
 
 
 # TODO: This needs futures and sending them as args

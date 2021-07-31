@@ -28,3 +28,9 @@ indent_style = tab
 
 [*.yml]
 indent_size = 2
+
+[.lithops_config]
+indent_size = 2
+
+[.sample.lithops_config]
+indent_size = 2

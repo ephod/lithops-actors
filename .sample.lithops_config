@@ -1,0 +1,21 @@
+lithops:
+  mode: localhost
+  storage: redis
+  storage_bucket: test
+  data_cleaner: true
+  monitoring: rabbitmq
+  workers: 1
+  data_limit: 4  # in MiB
+  execution_timeout: 1800
+  log_level: INFO
+
+localhost:
+  runtime: python3
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: sOmE_sEcUrE_pAsS
+
+rabbitmq:
+  amqp_url: amqp://guest:guest@127.0.0.1:5672/

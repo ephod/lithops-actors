@@ -1,16 +1,19 @@
 # Lithops lets you transparently run your Python functions in the Cloud
 # License: Apache Software License
 # Upstream url: https://github.com/lithops-cloud/lithops
-lithops>=2.3.0,<3.0.0
+lithops>=2.4.0,<3.0.0
 # Ray provides a simple, universal API for building distributed applications.
 # License: Apache 2.0
 # Upstream url: https://github.com/ray-project/ray
-ray>=1.2.0,<2.0.0
+ray>=1.5.0,<2.0.0
 # Tensors and Dynamic neural networks in Python with strong GPU acceleration
 # License: BSD License (BSD-3)
 # Upstream url: https://github.com/pytorch/pytorch
-torch>=1.8.0,<2.0.0
+torch>=1.9.0,<2.0.0
 # image and video datasets and models for torch deep learning
 # License: BSD
 # Upstream url: https://github.com/pytorch/vision
-torchvision>=0.9.0,<1.0.0
+torchvision>=0.10.0,<1.0.0
+
+prometheus-client>=0.11.0,<1.0.0
+boto3>=1.18.11,<2.0

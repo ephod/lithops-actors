@@ -1,0 +1,937 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "lithops": {
+      "type": "object",
+      "properties": {
+        "backend": {
+          "type": "string",
+          "enum": [
+            "aliyun_fc",
+            "aws_lambda",
+            "azure_batch",
+            "azure_functions",
+            "code_engine",
+            "gcp_cloudrun",
+            "gcp_functions",
+            "ibm_cf",
+            "k8s",
+            "knative",
+            "openwhisk",
+            "ibm_vpc",
+            "vm"
+          ],
+          "default": "ibm_cf"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "localhost",
+            "serverless",
+            "standalone"
+          ],
+          "default": "serverless"
+        },
+        "storage": {
+          "type": "string",
+          "enum": [
+            "aliyun_oss",
+            "aws_s3",
+            "azure_blob",
+            "ceph",
+            "gcp_storage",
+            "ibm_cos",
+            "infinispan",
+            "redis",
+            "swift"
+          ],
+          "default": "ibm_cos"
+        },
+        "storage_bucket": {
+          "type": "string",
+          "default": ""
+        },
+        "data_cleaner": {
+          "type": "boolean",
+          "default": true
+        },
+        "monitoring": {
+          "type": "string",
+          "enum": [
+            "storage",
+            "rabbitmq"
+          ],
+          "default": "storage"
+        },
+        "workers": {
+          "type": "integer"
+        },
+        "data_limit": {
+          "type": [
+            "integer",
+            "boolean"
+          ],
+          "default": 4
+        },
+        "execution_timeout": {
+          "type": "integer",
+          "default": 1800
+        },
+        "include_modules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "exclude_modules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "log_level": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "WARNING",
+            "INFO",
+            "DEBUG",
+            "ERROR",
+            "CRITICAL",
+            null
+          ],
+          "default": "INFO"
+        },
+        "log_format": {
+          "type": "string",
+          "default": "%(asctime)s [%(levelname)s] %(name)s -- %(message)s"
+        },
+        "log_stream": {
+          "type": "string",
+          "default": "ext://sys.stderr"
+        },
+        "log_filename": {
+          "type": "string",
+          "default": ""
+        },
+        "telemetry": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "storage_bucket"
+      ]
+    },
+    "localhost": {
+      "type": "object",
+      "properties": {
+        "runtime": {
+          "type": "string",
+          "default": "python3"
+        }
+      }
+    },
+    "serverless": {
+      "type": "object",
+      "properties": {
+        "backend": {
+          "type": "string",
+          "enum": [
+            "aliyun_fc",
+            "aws_lambda",
+            "azure_batch",
+            "azure_functions",
+            "code_engine",
+            "gcp_cloudrun",
+            "gcp_functions",
+            "ibm_cf",
+            "k8s",
+            "knative",
+            "openwhisk"
+          ],
+          "default": "ibm_cf"
+        },
+        "remote_invoker": {
+          "type": "boolean",
+          "default": false
+        },
+        "customized_runtime": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "standalone": {
+      "type": "object",
+      "properties": {
+        "backend": {
+          "type": "string",
+          "enum": [
+            "ibm_vpc",
+            "vm"
+          ],
+          "default": "ibm_vpc"
+        },
+        "runtime": {
+          "type": "string",
+          "default": "python3"
+        },
+        "exec_mode": {
+          "type": "string",
+          "enum": [
+            "consume",
+            "create"
+          ],
+          "default": "consume"
+        },
+        "auto_dismantle": {
+          "type": "boolean",
+          "default": true
+        },
+        "pull_runtime": {
+          "type": "boolean",
+          "default": false
+        },
+        "hard_dismantle_timeout": {
+          "type": "integer",
+          "default": 3600
+        },
+        "soft_dismantle_timeout": {
+          "type": "integer",
+          "default": 300
+        }
+      }
+    },
+    "prometheus": {
+      "type": "object",
+      "properties": {
+        "apigateway": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "apigateway"
+      ]
+    },
+    "ibm": {
+      "type": "object",
+      "properties": {
+        "iam_api_key": {
+          "type": "string"
+        }
+      }
+    },
+    "ibm_cf": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        },
+        "namespace_id": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 256
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "invoke_pool_threads": {
+          "type": "integer",
+          "default": 500
+        }
+      },
+      "required": [
+        "endpoint",
+        "namespace"
+      ]
+    },
+    "code_engine": {
+      "type": "object",
+      "properties": {
+        "namespace": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "docker_server": {
+          "type": "string",
+          "default": "https://index.docker.io/v1/"
+        },
+        "docker_user": {
+          "type": "string"
+        },
+        "docker_password": {
+          "type": "string"
+        },
+        "kubecfg_path": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 600
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "runtime_cpu": {
+          "type": "number",
+          "default": 0.125
+        }
+      }
+    },
+    "ibm_cos": {
+      "type": "object",
+      "properties": {
+        "region": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "string"
+        },
+        "private_endpoint": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        },
+        "access_key": {
+          "type": "string"
+        },
+        "secret_key": {
+          "type": "string"
+        }
+      }
+    },
+    "ibm_vpc": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "vpc_id": {
+          "type": "string"
+        },
+        "resource_group_id": {
+          "type": "string"
+        },
+        "security_group_id": {
+          "type": "string"
+        },
+        "subnet_id": {
+          "type": "string"
+        },
+        "key_id": {
+          "type": "string"
+        },
+        "image_id": {
+          "type": "string"
+        },
+        "ssh_user": {
+          "type": "string",
+          "default": "root"
+        },
+        "ssh_key_filename": {
+          "type": "string"
+        },
+        "profile_name": {
+          "type": "string",
+          "default": "cx2-2x4"
+        },
+        "volume_tier_name": {
+          "type": "string",
+          "default": "general-purpose"
+        },
+        "master_profile_name": {
+          "type": "string",
+          "default": "cx2-2x4"
+        },
+        "delete_on_dismantle": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "required": [
+        "endpoint",
+        "vpc_id",
+        "resource_group_id",
+        "security_group_id",
+        "subnet_id",
+        "key_id"
+      ]
+    },
+    "vm": {
+      "type": "object",
+      "properties": {
+        "ip_address": {
+          "type": "string"
+        },
+        "ssh_user": {
+          "type": "string"
+        },
+        "ssh_password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ip_address",
+        "ssh_user",
+        "ssh_password"
+      ]
+    },
+    "rabbitmq": {
+      "type": "object",
+      "properties": {
+        "amqp_url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "amqp_url"
+      ]
+    },
+    "knative": {
+      "type": "object",
+      "properties": {
+        "istio_endpoint": {
+          "type": "string"
+        },
+        "kubecfg_path": {
+          "type": "string"
+        },
+        "docker_server": {
+          "type": "string",
+          "default": "https://index.docker-io/v1/"
+        },
+        "docker_user": {
+          "type": "string"
+        },
+        "docker_password": {
+          "type": "string"
+        },
+        "git_url": {
+          "type": "string"
+        },
+        "git_rev": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_cpu": {
+          "type": "number",
+          "default": 0.5
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 600
+        },
+        "runtime_min_instances": {
+          "type": "integer",
+          "default": 0
+        },
+        "runtime_max_instances": {
+          "type": "integer",
+          "default": 250
+        },
+        "runtime_concurrency": {
+          "type": "integer",
+          "default": 1
+        },
+        "invoke_pool_threads": {
+          "type": "integer"
+        }
+      }
+    },
+    "k8s": {
+      "type": "object",
+      "properties": {
+        "kubecfg_path": {
+          "type": "string"
+        },
+        "docker_server": {
+          "type": "string",
+          "default": "https://index.docker-io/v1/"
+        },
+        "docker_user": {
+          "type": "string"
+        },
+        "docker_password": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_cpu": {
+          "type": "number",
+          "default": 0.125
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 600
+        }
+      }
+    },
+    "openwhisk": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        },
+        "insecure": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 600
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "invoke_pool_threads": {
+          "type": "integer",
+          "default": 500
+        }
+      },
+      "required": [
+        "endpoint",
+        "namespace",
+        "api_key",
+        "insecure"
+      ]
+    },
+    "swift": {
+      "type": "object",
+      "properties": {
+        "auth_url": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "project_id": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "auth_url",
+        "region",
+        "user_id",
+        "project_id",
+        "password"
+      ]
+    },
+    "infinispan": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "string"
+        },
+        "cache_name": {
+          "type": "string"
+        },
+        "cache_type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "password",
+        "endpoint"
+      ]
+    },
+    "ceph": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        },
+        "access_key": {
+          "type": "string"
+        },
+        "secret_key": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "endpoint",
+        "access_key",
+        "secret_key"
+      ]
+    },
+    "redis": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "default": 6379
+        },
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string",
+          "default": "default"
+        },
+        "ssl": {
+          "type": "boolean",
+          "default": false
+        },
+        "db": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    },
+    "aws": {
+      "type": "object",
+      "properties": {
+        "access_key_id": {
+          "type": "string"
+        },
+        "secret_access_key": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": [
+            "integer",
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "access_key_id",
+        "secret_access_key"
+      ]
+    },
+    "aws_lambda": {
+      "type": "object",
+      "properties": {
+        "region_name": {
+          "type": "string"
+        },
+        "execution_role": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 180
+        },
+        "invoke_pool_threads": {
+          "type": "integer",
+          "default": 64
+        },
+        "vpc": {
+          "type": "object",
+          "properties": {
+            "subnets": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "security_groups": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "efs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "access_point": {
+                "type": "string"
+              },
+              "mount_path": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "region_name",
+        "execution_role"
+      ]
+    },
+    "aws_s3": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "endpoint"
+      ]
+    },
+    "aliyun_oss": {
+      "type": "object",
+      "properties": {
+        "public_endpoint": {
+          "type": "string"
+        },
+        "internal_endpoint": {
+          "type": "string"
+        },
+        "access_key_id": {
+          "type": "string"
+        },
+        "access_key_secret": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "public_endpoint",
+        "internal_endpoint",
+        "access_key_id",
+        "access_key_secret"
+      ]
+    },
+    "aliyun_fc": {
+      "type": "object",
+      "properties": {
+        "public_endpoint": {
+          "type": "string"
+        },
+        "access_key_id": {
+          "type": "string"
+        },
+        "access_key_secret": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 300
+        },
+        "invoke_pool_threads": {
+          "type": "integer",
+          "default": 500
+        }
+      },
+      "required": [
+        "public_endpoint",
+        "access_key_id",
+        "access_key_secret"
+      ]
+    },
+    "azure_storage": {
+      "type": "object",
+      "properties": {
+        "storage_account_name": {
+          "type": "string"
+        },
+        "storage_account_key": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "storage_account_name",
+        "storage_account_key"
+      ]
+    },
+    "azure_functions": {
+      "type": "object",
+      "properties": {
+        "resource_group": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 300
+        },
+        "invocation_type": {
+          "type": "string",
+          "enum": [
+            "http",
+            "event"
+          ],
+          "default": "http"
+        },
+        "invoke_pool_threads": {
+          "type": "integer",
+          "default": 100
+        }
+      },
+      "required": [
+        "resource_group",
+        "location"
+      ]
+    },
+    "azure_batch": {
+      "type": "object",
+      "properties": {
+        "batch_account_name": {
+          "type": "string"
+        },
+        "batch_account_key": {
+          "type": "string"
+        },
+        "batch_account_url": {
+          "type": "string"
+        },
+        "poolvmsize": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "batch_account_name",
+        "batch_account_key",
+        "batch_account_url"
+      ]
+    },
+    "gcp": {
+      "type": "object",
+      "properties": {
+        "project_name": {
+          "type": "string"
+        },
+        "service_account": {
+          "type": "string"
+        },
+        "credentials_path": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "project_name",
+        "service_account",
+        "credentials_path",
+        "region"
+      ]
+    },
+    "gcp_functions": {
+      "type": "object",
+      "properties": {
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 90
+        },
+        "invoke_pool_threads": {
+          "type": "integer",
+          "default": 1000
+        }
+      }
+    },
+    "gcp_cloudrun": {
+      "type": "object",
+      "properties": {
+        "runtime": {
+          "type": "string"
+        },
+        "runtime_cpu": {
+          "type": "integer",
+          "default": 1
+        },
+        "runtime_memory": {
+          "type": "integer",
+          "default": 256
+        },
+        "runtime_timeout": {
+          "type": "integer",
+          "default": 300
+        },
+        "runtime_concurrency": {
+          "type": "integer",
+          "default": 1
+        },
+        "invoke_pool_threads": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "required": [
+    "lithops"
+  ]
+}
