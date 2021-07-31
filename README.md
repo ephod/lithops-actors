@@ -23,3 +23,33 @@ python -m pip install -r requirements.txt
 ```shell
 python -m pip install -r requirements-dev.txt
 ```
+
+### Follow logs
+
+```shell
+lithops logs poll
+```
+
+## Docker compose
+
+[Prometheus Redis Metrics Exporter](https://github.com/oliver006/redis_exporter)
+
+### No SSL/TLS for Redis exporter
+
+```yaml
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.24.0-alpine
+    command: -redis.addr ${REDIS_SCHEMA:-redis}://${REDIS_HOST}:${REDIS_PORT} -redis.password ${REDIS_PASSWORD}
+    ports:
+      - "127.0.0.1:9121:9121"
+```
+
+### SSL/TLS
+
+```yaml
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.24.0-alpine
+    command: -redis.addr ${REDIS_SCHEMA:-rediss}://${REDIS_HOST}:${REDIS_PORT} -redis.password ${REDIS_PASSWORD}
+    ports:
+      - "127.0.0.1:9121:9121"
+```
