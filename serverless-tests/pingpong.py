@@ -177,8 +177,6 @@ def main() -> None:
     director.msg_to('judge', ('set_up', (1_000, 'ping', 'pong'), {}))
 
     while director.waiting:
-        time.sleep(1)
-        print("Waiting a second ⌚")
         current_time = time.monotonic()
         if math.ceil(current_time - start) > AWS_LAMBDA_TIMEOUT_SECONDS:
             break
